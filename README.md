@@ -17,6 +17,7 @@ To simulate a production-style Blue/Green release setup that allows:
 
 ## 🧩 Project Structure
 
+```plaintext
 blue-green-nginx/
 ├── blue/
 │   ├── Dockerfile
@@ -36,8 +37,8 @@ blue-green-nginx/
 ├── switch.ps1
 ├── rollback.ps1
 ├── README.md
-├── DECISION.md
-└── DevOps Research Task – Infrastructure Setup & CLI Flow for Backend.docx
+└── DECISION.md
+```
 
 ---
 
@@ -88,83 +89,113 @@ services:
       - RELEASE_ID=${RELEASE_ID_GREEN}
     ports:
       - "8082:3000"
-⚡ Environment Variables (.env)
-bash
-Copy code
+```
+
+---
+
+## ⚡ Environment Variables (.env)
+
+```dotenv
 ACTIVE_POOL=blue
 BLUE_IMAGE=blue-app:latest
 GREEN_IMAGE=green-app:latest
 RELEASE_ID_BLUE=1
 RELEASE_ID_GREEN=1
-🚀 Build and Run the Containers
-bash
-Copy code
+```
+
+---
+
+## 🚀 Build and Run the Containers
+
+```bash
 # Build app images
 docker build -t blue-app:latest ./blue
 docker build -t green-app:latest ./green
 
 # Start containers
 docker compose up -d
-🧪 Testing the Deployment
-Check which environment is active
-bash
-Copy code
-curl http://localhost:8080
-Expected output:
+```
 
-mathematica
-Copy code
+---
+
+## 🧪 Testing the Deployment
+
+Check which environment is active:
+
+```bash
+curl http://localhost:8080
+```
+
+Expected output:
+```
 💙 Blue App - Version 1
-🔁 Switching Environments
+```
+
+---
+
+## 🔁 Switching Environments
+
 Switch between Blue ↔ Green environments using:
 
-Linux/macOS:
-bash
-Copy code
+### For Linux/macOS:
+```bash
 ./switch.sh
-Windows PowerShell:
-powershell
-Copy code
+```
+
+### For Windows PowerShell:
+```powershell
 .\switch.ps1
+```
+
 Then verify:
-
-bash
-Copy code
+```bash
 curl http://localhost:8080
+```
 Expected output:
-
-mathematica
-Copy code
+```
 💚 Green App - Version 1
-🧯 Rollback
+```
+
+---
+
+## 🧯 Rollback
+
 If you need to revert to the previous environment:
 
-Linux/macOS:
-bash
-Copy code
+### Linux/macOS:
+```bash
 ./rollback.sh
-PowerShell:
-powershell
-Copy code
+```
+
+### PowerShell:
+```powershell
 .\rollback.ps1
-🌐 Optional: Expose Local Services with ngrok
-If you need to expose your local Nginx endpoint publicly for testing:
+```
 
-bash
-Copy code
+---
+
+## 🌐 Optional: Expose Local Services with ngrok
+
+```bash
 ngrok http 8080
-The command will give you a forwarding URL like https://xxxx.ngrok-free.dev.
+```
 
-⚠️ If you see errors like ERR_NGROK_334, stop any existing ngrok sessions or use --pooling-enabled for multiple endpoints.
+The command will give you a forwarding URL like `https://xxxx.ngrok-free.dev`. You can then access your Blue/Green deployment externally via that URL.
 
-📁 Supplementary Files / References
-DECISION.md → Implementation decisions for Part A
+**Note:** If you see errors like `ERR_NGROK_334`, stop any existing ngrok sessions or use `--pooling-enabled` for multiple endpoints.
 
-Part B Research → Infrastructure setup & CLI flow for Backend.im
+---
 
-📁 Git Workflow / Pushing to GitHub
-bash
-Copy code
+## 📁 Research & DECISION References
+
+- **Part B Research Doc**: [DevOps Research Task – Infrastructure Setup & CLI Flow for Backend](./DevOps%20Research%20Task%20%E2%80%93%20Infrastructure%20Setup%20%26%20CLI%20Flow%20for%20Backend.docx)
+- **DECISION.md**: [Decision Reasoning](./Decision.md)
+
+---
+
+## 📁 Git Workflow / Pushing to GitHub
+
+```bash
 # Initialize repository
 git init
 
@@ -174,7 +205,7 @@ git config --global --add safe.directory C:/Users/banji/projects/blue-green-ngin
 # Stage all files
 git add .
 
-# Commit
+# Commit changes
 git commit -m "Initial commit: Blue/Green Switch project by Yemisi Okunrounmu (DevOps Intern)"
 
 # Add remote
@@ -183,60 +214,35 @@ git remote add origin https://github.com/Yemmmyc/blue-green-nginx.git
 # Push to main
 git branch -M main
 git push -u origin main
-📈 Flow Summary
-Blue is active – users see Blue App responses.
-
-Deploy new release to Green.
-
-Switch traffic using switch.sh / switch.ps1.
-
-Validate Green is working correctly.
-
-Rollback if needed using rollback scripts.
-
-👩‍💻 Author
-Yemisi Okunrounmu
-DevOps Intern
-📧 Email: yemmmyc@hotmail.com
-🌐 GitHub: https://github.com/Yemmmyc
-
-🏁 Conclusion
-This project demonstrates the Blue/Green deployment strategy in a simple but realistic DevOps workflow, complete with:
-
-Dockerized applications
-
-Nginx reverse proxy routing
-
-Automated environment switching
-
-Zero downtime and rollback support
-
-Perfect foundation for integrating CI/CD automation in future stages.
-
+```
 
 ---
 
-This version now:  
-- Correctly links **DECISION.md** and your Part B research doc  
-- Includes **ngrok instructions**  
-- Keeps the project structure clean  
--  
+## 📈 Flow Summary
+
+1. Blue is active – users see Blue App responses.
+2. Deploy new release to Green.
+3. Switch traffic using `switch.sh` / `switch.ps1`.
+4. Validate Green is working correctly.
+5. Rollback if needed using rollback scripts.
 
 ---
 
-🌐 Optional: Expose Local Services with ngrok
+## 👩‍💻 Author
 
-If you need to expose your local Nginx endpoint publicly for testing:
+**Yemisi Okunrounmu**  
+*DevOps Intern*  
+📧 Email: [yemmmyc@hotmail.com](mailto:yemmmyc@hotmail.com)  
+🌐 GitHub: [https://github.com/Yemmmyc](https://github.com/Yemmmyc)
 
-ngrok http 8080
+---
 
+## 🏁 Conclusion
 
-The command will give you a forwarding URL like:
+This project demonstrates the **Blue/Green deployment strategy** in a simple but realistic DevOps workflow, complete with:
+- Dockerized applications
+- Nginx reverse proxy routing
+- Automated environment switching
+- Zero downtime and rollback support
 
-Forwarding                     https://jarrett-semisuccess-ungladly.ngrok-free.dev -> http://localhost:8080
-
-
-You can then access your Blue/Green deployment externally via that URL.
-
-⚠️ If you see errors like ERR_NGROK_334, stop any existing ngrok sessions first, or use --pooling-enabled for multiple endpoints.
-💡 Expected for grading: The grader should be able to visit the forwarded URL and see the Blue or Green app response (💙 Blue App / 💚 Green App) depending on the active environment.
+Perfect foundation for integrating CI/CD automa
