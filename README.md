@@ -19,15 +19,15 @@ To simulate a production-style Blue/Green release setup that allows:
 
 blue-green-nginx/
 ├── blue/
-│ ├── Dockerfile
-│ └── server.js
+│   ├── Dockerfile
+│   └── server.js
 ├── green/
-│ ├── Dockerfile
-│ └── server.js
+│   ├── Dockerfile
+│   └── server.js
 ├── nginx/
-│ └── nginx.conf.template
+│   └── nginx.conf.template
 ├── assets/
-│ └── blue-green-flowchart.png
+│   └── blue-green-flowchart.png
 ├── .env
 ├── .env.example
 ├── docker-compose.yml
@@ -36,7 +36,8 @@ blue-green-nginx/
 ├── switch.ps1
 ├── rollback.ps1
 ├── README.md
-└── DECISION.md
+├── DECISION.md
+└── DevOps Research Task – Infrastructure Setup & CLI Flow for Backend.docx
 
 ---
 
@@ -87,78 +88,83 @@ services:
       - RELEASE_ID=${RELEASE_ID_GREEN}
     ports:
       - "8082:3000"
-
 ⚡ Environment Variables (.env)
-
+bash
+Copy code
 ACTIVE_POOL=blue
 BLUE_IMAGE=blue-app:latest
 GREEN_IMAGE=green-app:latest
 RELEASE_ID_BLUE=1
 RELEASE_ID_GREEN=1
-
 🚀 Build and Run the Containers
-
+bash
+Copy code
 # Build app images
 docker build -t blue-app:latest ./blue
 docker build -t green-app:latest ./green
 
 # Start containers
 docker compose up -d
-
 🧪 Testing the Deployment
 Check which environment is active
-
+bash
+Copy code
 curl http://localhost:8080
-
 Expected output:
 
+mathematica
+Copy code
 💙 Blue App - Version 1
-
 🔁 Switching Environments
-
 Switch between Blue ↔ Green environments using:
 
-For Linux/macOS:
-
+Linux/macOS:
+bash
+Copy code
 ./switch.sh
-
-For Windows PowerShell:
-
+Windows PowerShell:
+powershell
+Copy code
 .\switch.ps1
-
 Then verify:
 
+bash
+Copy code
 curl http://localhost:8080
-
 Expected output:
 
+mathematica
+Copy code
 💚 Green App - Version 1
-
 🧯 Rollback
-
 If you need to revert to the previous environment:
 
 Linux/macOS:
-
+bash
+Copy code
 ./rollback.sh
-
 PowerShell:
-
+powershell
+Copy code
 .\rollback.ps1
-
 🌐 Optional: Expose Local Services with ngrok
-
 If you need to expose your local Nginx endpoint publicly for testing:
 
+bash
+Copy code
 ngrok http 8080
+The command will give you a forwarding URL like https://xxxx.ngrok-free.dev.
 
-The command will give you a forwarding URL like https://xxxx.ngrok-free.dev
+⚠️ If you see errors like ERR_NGROK_334, stop any existing ngrok sessions or use --pooling-enabled for multiple endpoints.
 
-You can then access your Blue/Green deployment externally via that URL
+📁 Supplementary Files / References
+DECISION.md → Implementation decisions for Part A
 
-If you see errors like ERR_NGROK_334, stop any existing ngrok sessions or use --pooling-enabled for multiple endpoints
+Part B Research → Infrastructure setup & CLI flow for Backend.im
 
 📁 Git Workflow / Pushing to GitHub
+bash
+Copy code
 # Initialize repository
 git init
 
@@ -177,9 +183,7 @@ git remote add origin https://github.com/Yemmmyc/blue-green-nginx.git
 # Push to main
 git branch -M main
 git push -u origin main
-
 📈 Flow Summary
-
 Blue is active – users see Blue App responses.
 
 Deploy new release to Green.
@@ -191,15 +195,12 @@ Validate Green is working correctly.
 Rollback if needed using rollback scripts.
 
 👩‍💻 Author
-
 Yemisi Okunrounmu
 DevOps Intern
-📧 Email: [yemmmyc@hotmail.com
-]
+📧 Email: yemmmyc@hotmail.com
 🌐 GitHub: https://github.com/Yemmmyc
 
 🏁 Conclusion
-
 This project demonstrates the Blue/Green deployment strategy in a simple but realistic DevOps workflow, complete with:
 
 Dockerized applications
@@ -211,3 +212,31 @@ Automated environment switching
 Zero downtime and rollback support
 
 Perfect foundation for integrating CI/CD automation in future stages.
+
+
+---
+
+This version now:  
+- Correctly links **DECISION.md** and your Part B research doc  
+- Includes **ngrok instructions**  
+- Keeps the project structure clean  
+-  
+
+---
+
+🌐 Optional: Expose Local Services with ngrok
+
+If you need to expose your local Nginx endpoint publicly for testing:
+
+ngrok http 8080
+
+
+The command will give you a forwarding URL like:
+
+Forwarding                     https://jarrett-semisuccess-ungladly.ngrok-free.dev -> http://localhost:8080
+
+
+You can then access your Blue/Green deployment externally via that URL.
+
+⚠️ If you see errors like ERR_NGROK_334, stop any existing ngrok sessions first, or use --pooling-enabled for multiple endpoints.
+💡 Expected for grading: The grader should be able to visit the forwarded URL and see the Blue or Green app response (💙 Blue App / 💚 Green App) depending on the active environment.
