@@ -1,6 +1,6 @@
 # 🌀 DevOps Intern Stage 2 – Blue/Green Deployment with Nginx Upstreams (Auto-Failover + Manual Toggle)
 
-![Blue/Green Flowchart](A_flowchart_in_the_image_illustrates_a_blue-green_.png)
+![Blue/Green Flowchart](assets/blue-green-flowchart.png)
 
 This project implements a **Blue/Green deployment pattern** using **Docker Compose** and **Nginx upstreams** to achieve **zero-downtime deployments** with **manual environment switching** and **auto-failover** capability.
 
