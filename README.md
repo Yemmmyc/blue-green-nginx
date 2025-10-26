@@ -13,26 +13,19 @@ To simulate a production-style Blue/Green release setup that allows:
 - Auto-failover logic within Nginx configuration
 - Environment toggle using shell or PowerShell scripts
 
----
-
 ## 🧩 Project Structure
 
 blue-green-nginx/
-│
 ├── blue/
-│   ├── Dockerfile
-│   └── server.js
-│
+│ ├── Dockerfile
+│ └── server.js
 ├── green/
-│   ├── Dockerfile
-│   └── server.js
-│
+│ ├── Dockerfile
+│ └── server.js
 ├── nginx/
-│   └── nginx.conf.template
-│
+│ └── nginx.conf.template
 ├── assets/
-│   └── blue-green-flowchart.png
-│
+│ └── blue-green-flowchart.png
 ├── .env
 ├── .env.example
 ├── docker-compose.yml
@@ -43,7 +36,7 @@ blue-green-nginx/
 ├── README.md
 └── DECISION.md
 
----
+
 
 ## ⚙️ Technologies Used
 - **Docker & Docker Compose** – Containerization & multi-service orchestration  
