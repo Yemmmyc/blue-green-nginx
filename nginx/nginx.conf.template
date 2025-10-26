@@ -1,0 +1,44 @@
+events {}
+
+http {
+  upstream backend {
+    # These will be dynamically replaced by envsubst
+    server ${PRIMARY_HOST} max_fails=1 fail_timeout=3s;
+    server ${BACKUP_HOST} backup;
+  }
+
+  server {
+    listen 80;   # must match container internal port, not 8080
+
+    location / {
+      proxy_pass http://backend;
+
+      # Preserve client and proxy headers
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto $scheme;
+
+      # Custom headers for visibility
+      add_header X-App-Pool $upstream_addr;
+      add_header X-Release-Id $upstream_http_x_release_id;
+
+      # Retry on timeout or 5xx errors
+      proxy_next_upstream error timeout http_500 http_502 http_503 http_504;
+      proxy_next_upstream_tries 2;
+      proxy_next_upstream_timeout 5s;
+
+      # Connection timeouts
+      proxy_connect_timeout 3s;
+      proxy_read_timeout 10s;
+      proxy_send_timeout 10s;
+    }
+
+    # Simple health check endpoint
+    location /health {
+      access_log off;
+      return 200 'healthy';
+      add_header Content-Type text/plain;
+    }
+  }
+}
