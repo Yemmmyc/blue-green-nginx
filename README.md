@@ -17,19 +17,21 @@ To simulate a production-style Blue/Green release setup that allows:
 
 ## 🧩 Project Structure
 
-```
 blue-green-nginx/
 │
 ├── blue/
-│   └── Dockerfile
-│   └── server.js
+│ └── Dockerfile
+│ └── server.js
 │
 ├── green/
-│   └── Dockerfile
-│   └── server.js
+│ └── Dockerfile
+│ └── server.js
 │
 ├── nginx/
-│   └── nginx.conf.template
+│ └── nginx.conf.template
+│
+├── assets/
+│ └── blue-green-flowchart.png
 │
 ├── .env
 ├── .env.example
@@ -38,8 +40,11 @@ blue-green-nginx/
 ├── rollback.sh
 ├── switch.ps1
 ├── rollback.ps1
-└── README.md
-```
+├── README.md
+└── DECISION.md
+
+yaml
+Copy code
 
 ---
 
@@ -89,144 +94,113 @@ services:
       - RELEASE_ID=${RELEASE_ID_GREEN}
     ports:
       - "8082:3000"
-```
-
----
-
-## ⚡ Environment Variables (.env)
-
-```bash
+⚡ Environment Variables (.env)
+bash
+Copy code
 ACTIVE_POOL=blue
 BLUE_IMAGE=blue-app:latest
 GREEN_IMAGE=green-app:latest
 RELEASE_ID_BLUE=1
 RELEASE_ID_GREEN=1
-```
-
----
-
-## 🚀 Build and Run the Containers
-
-```bash
+🚀 Build and Run the Containers
+bash
+Copy code
 # Build app images
 docker build -t blue-app:latest ./blue
 docker build -t green-app:latest ./green
 
 # Start containers
 docker compose up -d
-```
-
----
-
-## 🧪 Testing the Deployment
-
-### Check which environment is active
-```bash
+🧪 Testing the Deployment
+Check which environment is active
+bash
+Copy code
 curl http://localhost:8080
-```
-
 Expected output:
-```
+
+mathematica
+Copy code
 💙 Blue App - Version 1
-```
+🌐 Optional: Expose Locally via Ngrok
+If you want to test externally:
 
----
+Start ngrok on port 8080 (Nginx public port):
 
-## 🔁 Switching Environments
+bash
+Copy code
+ngrok http 8080
+Copy the HTTPS forwarding URL (e.g., https://xxxx.ngrok-free.dev)
 
+Use it to access the active app from any device/browser.
+
+Note: Only one ngrok endpoint per account can be active at a time. Stop the previous session before starting a new one.
+
+🔁 Switching Environments
 Switch between Blue ↔ Green environments using:
 
-### For Linux/macOS:
-```bash
+For Linux/macOS:
+bash
+Copy code
 ./switch.sh
-```
-
-### For Windows PowerShell:
-```powershell
+For Windows PowerShell:
+powershell
+Copy code
 .\switch.ps1
-```
-
 Then verify:
-```bash
+
+bash
+Copy code
 curl http://localhost:8080
-```
 Expected output:
-```
+
+mathematica
+Copy code
 💚 Green App - Version 1
-```
-
----
-
-## 🧯 Rollback
+🧯 Rollback
 If you need to revert to the previous environment:
 
-### Linux/macOS:
-```bash
+Linux/macOS:
+bash
+Copy code
 ./rollback.sh
-```
-
-### PowerShell:
-```powershell
-.
-rollback.ps1
-```
-
----
-
+PowerShell:
+powershell
+Copy code
+.\rollback.ps1
 📁 Git Workflow / Pushing to GitHub
-
-Initialize Git repository (if not already):
-
+bash
+Copy code
+# Initialize Git repository (if not already)
 git init
 
-Mark directory as safe (Windows only, if needed):
-
+# Mark directory as safe (Windows only)
 git config --global --add safe.directory C:/Users/banji/projects/blue-green-nginx
 
-Stage all files:
-
+# Stage all files
 git add .
 
-Commit changes:
-
+# Commit changes
 git commit -m "Initial commit: Blue/Green Switch project by Yemisi Okunrounmu (DevOps Intern)"
 
-Create a GitHub repository
+# Add GitHub remote
+git remote add origin https://github.com/Yemmmyc/blue-green-nginx.git
 
-Go to GitHub
- → New Repository
-
-Name it blue-green-nginx
-
-Do not initialize with README.
-
-Add GitHub remote:
-
-git remote add origin https://github.com/YOUR_GITHUB_USERNAME/blue-green-nginx.git
-
-Push to GitHub (main branch):
-
+# Push to GitHub (main branch)
 git branch -M main
 git push -u origin main
+📈 Flow Summary
+Blue is active – users see Blue App responses.
 
-Verify files on GitHub
+Deploy new release to Green.
 
-Ensure all scripts, Docker files, docker-compose.yml, .env.example, and README.md are uploaded.
+Switch traffic using switch.sh / switch.ps1.
 
+Validate Green is working correctly.
 
-## 📈 Flow Summary
+Rollback if needed using rollback scripts.
 
-1. **Blue is active** – users see Blue App responses.  
-2. **Deploy new release** to Green.  
-3. **Switch traffic** using `switch.sh` / `switch.ps1`.  
-4. **Validate** Green is working correctly.  
-5. **Rollback** if needed using rollback scripts.
-
----
-
-Final Checklist Before Submission
-
-Files to include in the repo:
+✅ Final Checklist Before Submission
+Include in your repo:
 
 README.md → Blue/Green deployment instructions
 
@@ -242,58 +216,23 @@ rollback.sh / rollback.ps1 → Rollback scripts
 
 DECISION.md → Your reasoning for Part A
 
-PartB_Backend_im_Research.md (or Google Doc link in README) → Research task
+PartB_Backend_im_Research.md (or Google Doc link) → Research task
 
-Check Git remote:
+👩‍💻 Author
+Yemisi Okunrounmu
+DevOps Intern
+📧 Email: yemmmyc@hotmail.com
+🌐 GitHub: https://github.com/Yemmmyc
 
-git remote -v
+🏁 Conclusion
+This project demonstrates the Blue/Green deployment strategy in a simple but realistic DevOps workflow, complete with:
 
+Dockerized applications
 
-Ensure it points to your GitHub repo, e.g.:
+Nginx reverse proxy routing
 
-origin  https://github.com/Yemmmyc/blue-green-nginx.git (fetch)
-origin  https://github.com/Yemmmyc/blue-green-nginx.git (push)
+Automated environment switching
 
-
-Stage all files for commit:
-
-git add .
-
-
-Commit changes with a clear message:
-
-git commit -m "Stage 2: Blue/Green deployment, DECISION.md, Part B research doc"
-
-
-Push to GitHub main branch:
-
-git branch -M main
-git push -u origin main
-
-
-Verify on GitHub that all files are uploaded correctly.
-
-Part B submission:
-
-Include a link to your Google Doc for the research task in Slack /stage-two-devops.
-
-Ensure the doc has general view access.
-
----
-
-## 👩‍💻 Author
-**Yemisi Okunrounmu**  
-*DevOps Intern*  
-📧 Email: [yemmmyc@hotmail.com]  
-🌐 GitHub: [[your GitHub link](https://github.com/Yemmmyc/)]
-
----
-
-## 🏁 Conclusion
-This project demonstrates the **Blue/Green deployment strategy** in a simple but realistic DevOps workflow, complete with:
-- Dockerized applications  
-- Nginx reverse proxy routing  
-- Automated environment switching  
-- Zero downtime and rollback support  
+Zero downtime and rollback support
 
 Perfect foundation for integrating CI/CD automation in future stages.
