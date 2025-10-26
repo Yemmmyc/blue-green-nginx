@@ -20,18 +20,18 @@ To simulate a production-style Blue/Green release setup that allows:
 blue-green-nginx/
 │
 ├── blue/
-│ └── Dockerfile
-│ └── server.js
+│   ├── Dockerfile
+│   └── server.js
 │
 ├── green/
-│ └── Dockerfile
-│ └── server.js
+│   ├── Dockerfile
+│   └── server.js
 │
 ├── nginx/
-│ └── nginx.conf.template
+│   └── nginx.conf.template
 │
 ├── assets/
-│ └── blue-green-flowchart.png
+│   └── blue-green-flowchart.png
 │
 ├── .env
 ├── .env.example
@@ -42,9 +42,6 @@ blue-green-nginx/
 ├── rollback.ps1
 ├── README.md
 └── DECISION.md
-
-yaml
-Copy code
 
 ---
 
@@ -121,19 +118,17 @@ Expected output:
 mathematica
 Copy code
 💙 Blue App - Version 1
-🌐 Optional: Expose Locally via Ngrok
-If you want to test externally:
-
-Start ngrok on port 8080 (Nginx public port):
+Optional: Expose locally via ngrok
+You can make your local Nginx endpoint public using ngrok:
 
 bash
 Copy code
 ngrok http 8080
-Copy the HTTPS forwarding URL (e.g., https://xxxx.ngrok-free.dev)
+You’ll get a public URL like https://<random>.ngrok-free.dev
 
-Use it to access the active app from any device/browser.
+Use this URL to test your deployment externally
 
-Note: Only one ngrok endpoint per account can be active at a time. Stop the previous session before starting a new one.
+Ensure only one tunnel per endpoint is running, otherwise use --pooling-enabled or stop existing tunnels.
 
 🔁 Switching Environments
 Switch between Blue ↔ Green environments using:
@@ -168,9 +163,9 @@ powershell
 Copy code
 .\rollback.ps1
 📁 Git Workflow / Pushing to GitHub
-bash
+powershell
 Copy code
-# Initialize Git repository (if not already)
+# Initialize Git repo (if not already)
 git init
 
 # Mark directory as safe (Windows only)
@@ -180,14 +175,18 @@ git config --global --add safe.directory C:/Users/banji/projects/blue-green-ngin
 git add .
 
 # Commit changes
-git commit -m "Initial commit: Blue/Green Switch project by Yemisi Okunrounmu (DevOps Intern)"
+git commit -m "Stage 2: Blue/Green deployment with README, DECISION.md, Part B research"
+
+# Set main branch
+git branch -M main
 
 # Add GitHub remote
 git remote add origin https://github.com/Yemmmyc/blue-green-nginx.git
 
-# Push to GitHub (main branch)
-git branch -M main
+# Push to GitHub
 git push -u origin main
+Ensure your README.md, .env.example, docker-compose.yml, nginx template, scripts, DECISION.md, Part B doc are all pushed.
+
 📈 Flow Summary
 Blue is active – users see Blue App responses.
 
@@ -199,29 +198,10 @@ Validate Green is working correctly.
 
 Rollback if needed using rollback scripts.
 
-✅ Final Checklist Before Submission
-Include in your repo:
-
-README.md → Blue/Green deployment instructions
-
-.env.example → Environment variables template
-
-docker-compose.yml → Compose orchestration
-
-nginx/nginx.conf.template → Nginx template
-
-switch.sh / switch.ps1 → Manual environment switch
-
-rollback.sh / rollback.ps1 → Rollback scripts
-
-DECISION.md → Your reasoning for Part A
-
-PartB_Backend_im_Research.md (or Google Doc link) → Research task
-
 👩‍💻 Author
 Yemisi Okunrounmu
 DevOps Intern
-📧 Email: yemmmyc@hotmail.com
+📧 Email: [yemmmyc@hotmail.com]
 🌐 GitHub: https://github.com/Yemmmyc
 
 🏁 Conclusion
