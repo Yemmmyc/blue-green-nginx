@@ -13,6 +13,8 @@ To simulate a production-style Blue/Green release setup that allows:
 - Auto-failover logic within Nginx configuration
 - Environment toggle using shell or PowerShell scripts
 
+---
+
 ## 🧩 Project Structure
 
 blue-green-nginx/
@@ -36,13 +38,14 @@ blue-green-nginx/
 ├── README.md
 └── DECISION.md
 
-
+---
 
 ## ⚙️ Technologies Used
 - **Docker & Docker Compose** – Containerization & multi-service orchestration  
 - **Node.js (v18-alpine)** – Lightweight backend for Blue/Green apps  
 - **Nginx** – Reverse proxy & load balancer for Blue/Green routing  
 - **Shell & PowerShell Scripts** – Environment toggle and rollback automation  
+- **ngrok** – Optional for exposing local services publicly  
 
 ---
 
@@ -84,81 +87,79 @@ services:
       - RELEASE_ID=${RELEASE_ID_GREEN}
     ports:
       - "8082:3000"
+
 ⚡ Environment Variables (.env)
-bash
-Copy code
+
 ACTIVE_POOL=blue
 BLUE_IMAGE=blue-app:latest
 GREEN_IMAGE=green-app:latest
 RELEASE_ID_BLUE=1
 RELEASE_ID_GREEN=1
+
 🚀 Build and Run the Containers
-bash
-Copy code
+
 # Build app images
 docker build -t blue-app:latest ./blue
 docker build -t green-app:latest ./green
 
 # Start containers
 docker compose up -d
+
 🧪 Testing the Deployment
 Check which environment is active
-bash
-Copy code
+
 curl http://localhost:8080
+
 Expected output:
 
-mathematica
-Copy code
 💙 Blue App - Version 1
-Optional: Expose locally via ngrok
-You can make your local Nginx endpoint public using ngrok:
-
-bash
-Copy code
-ngrok http 8080
-You’ll get a public URL like https://<random>.ngrok-free.dev
-
-Use this URL to test your deployment externally
-
-Ensure only one tunnel per endpoint is running, otherwise use --pooling-enabled or stop existing tunnels.
 
 🔁 Switching Environments
+
 Switch between Blue ↔ Green environments using:
 
 For Linux/macOS:
-bash
-Copy code
+
 ./switch.sh
+
 For Windows PowerShell:
-powershell
-Copy code
+
 .\switch.ps1
+
 Then verify:
 
-bash
-Copy code
 curl http://localhost:8080
+
 Expected output:
 
-mathematica
-Copy code
 💚 Green App - Version 1
+
 🧯 Rollback
+
 If you need to revert to the previous environment:
 
 Linux/macOS:
-bash
-Copy code
+
 ./rollback.sh
+
 PowerShell:
-powershell
-Copy code
+
 .\rollback.ps1
+
+🌐 Optional: Expose Local Services with ngrok
+
+If you need to expose your local Nginx endpoint publicly for testing:
+
+ngrok http 8080
+
+The command will give you a forwarding URL like https://xxxx.ngrok-free.dev
+
+You can then access your Blue/Green deployment externally via that URL
+
+If you see errors like ERR_NGROK_334, stop any existing ngrok sessions or use --pooling-enabled for multiple endpoints
+
 📁 Git Workflow / Pushing to GitHub
-powershell
-Copy code
-# Initialize Git repo (if not already)
+# Initialize repository
 git init
 
 # Mark directory as safe (Windows only)
@@ -167,20 +168,18 @@ git config --global --add safe.directory C:/Users/banji/projects/blue-green-ngin
 # Stage all files
 git add .
 
-# Commit changes
-git commit -m "Stage 2: Blue/Green deployment with README, DECISION.md, Part B research"
+# Commit
+git commit -m "Initial commit: Blue/Green Switch project by Yemisi Okunrounmu (DevOps Intern)"
 
-# Set main branch
-git branch -M main
-
-# Add GitHub remote
+# Add remote
 git remote add origin https://github.com/Yemmmyc/blue-green-nginx.git
 
-# Push to GitHub
+# Push to main
+git branch -M main
 git push -u origin main
-Ensure your README.md, .env.example, docker-compose.yml, nginx template, scripts, DECISION.md, Part B doc are all pushed.
 
 📈 Flow Summary
+
 Blue is active – users see Blue App responses.
 
 Deploy new release to Green.
@@ -192,12 +191,15 @@ Validate Green is working correctly.
 Rollback if needed using rollback scripts.
 
 👩‍💻 Author
+
 Yemisi Okunrounmu
 DevOps Intern
-📧 Email: [yemmmyc@hotmail.com]
+📧 Email: [yemmmyc@hotmail.com
+]
 🌐 GitHub: https://github.com/Yemmmyc
 
 🏁 Conclusion
+
 This project demonstrates the Blue/Green deployment strategy in a simple but realistic DevOps workflow, complete with:
 
 Dockerized applications
