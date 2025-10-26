@@ -168,10 +168,51 @@ If you need to revert to the previous environment:
 ### PowerShell:
 ```powershell
 .
-ollback.ps1
+rollback.ps1
 ```
 
 ---
+
+📁 Git Workflow / Pushing to GitHub
+
+Initialize Git repository (if not already):
+
+git init
+
+Mark directory as safe (Windows only, if needed):
+
+git config --global --add safe.directory C:/Users/banji/projects/blue-green-nginx
+
+Stage all files:
+
+git add .
+
+Commit changes:
+
+git commit -m "Initial commit: Blue/Green Switch project by Yemisi Okunrounmu (DevOps Intern)"
+
+Create a GitHub repository
+
+Go to GitHub
+ → New Repository
+
+Name it blue-green-nginx
+
+Do not initialize with README.
+
+Add GitHub remote:
+
+git remote add origin https://github.com/YOUR_GITHUB_USERNAME/blue-green-nginx.git
+
+Push to GitHub (main branch):
+
+git branch -M main
+git push -u origin main
+
+Verify files on GitHub
+
+Ensure all scripts, Docker files, docker-compose.yml, .env.example, and README.md are uploaded.
+
 
 ## 📈 Flow Summary
 
@@ -183,11 +224,68 @@ ollback.ps1
 
 ---
 
+Final Checklist Before Submission
+
+Files to include in the repo:
+
+README.md → Blue/Green deployment instructions
+
+.env.example → Environment variables template
+
+docker-compose.yml → Compose orchestration
+
+nginx/nginx.conf.template → Nginx template
+
+switch.sh / switch.ps1 → Manual environment switch
+
+rollback.sh / rollback.ps1 → Rollback scripts
+
+DECISION.md → Your reasoning for Part A
+
+PartB_Backend_im_Research.md (or Google Doc link in README) → Research task
+
+Check Git remote:
+
+git remote -v
+
+
+Ensure it points to your GitHub repo, e.g.:
+
+origin  https://github.com/Yemmmyc/blue-green-nginx.git (fetch)
+origin  https://github.com/Yemmmyc/blue-green-nginx.git (push)
+
+
+Stage all files for commit:
+
+git add .
+
+
+Commit changes with a clear message:
+
+git commit -m "Stage 2: Blue/Green deployment, DECISION.md, Part B research doc"
+
+
+Push to GitHub main branch:
+
+git branch -M main
+git push -u origin main
+
+
+Verify on GitHub that all files are uploaded correctly.
+
+Part B submission:
+
+Include a link to your Google Doc for the research task in Slack /stage-two-devops.
+
+Ensure the doc has general view access.
+
+---
+
 ## 👩‍💻 Author
 **Yemisi Okunrounmu**  
 *DevOps Intern*  
-📧 Email: [your.email@example.com]  
-🌐 GitHub: [your GitHub link]
+📧 Email: [yemmmyc@hotmail.com]  
+🌐 GitHub: [[your GitHub link](https://github.com/Yemmmyc/)]
 
 ---
 
